@@ -11,4 +11,9 @@ public class Snake {
 		this.tail = tail2;
 	}
 
+	public void move() {
+		this.x += this.xdir;
+		this.y += this.ydir;
+	}
+
 }

@@ -11,10 +11,11 @@ public class Game extends JPanel {
 	static int cellSize = 25;
 	static int height = 375;
 	static int width = 425;
+	static int startTail = 10;
 	static Cell grid[][] = new Cell[width / cellSize][height / cellSize];
-	static Cell[] tail = new Cell[4];
+	static Cell[] tail = new Cell[startTail];
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		JFrame frame = new JFrame("Snake");
 		Game app = new Game();
 		frame.add(app);
@@ -23,30 +24,32 @@ public class Game extends JPanel {
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+		for (int i = 0; i < startTail; i++) {
+			tail[i] = new Cell(startTail - i, 7);
+		}
+
+		Snake snakeHead = new Snake(startTail, 7, 1, 0, tail);
+
 		frame.addKeyListener(new KeyListener() {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				int keyCode = e.getKeyCode();
 				switch (keyCode) {
 				case KeyEvent.VK_UP:
-					System.out.println("UP");
-					tail[0].y--;
-					app.repaint();
+					snakeHead.xdir = 0;
+					snakeHead.ydir = -1;
 					break;
 				case KeyEvent.VK_DOWN:
-					System.out.println("DOWN");
-					tail[0].y++;
-					app.repaint();
+					snakeHead.xdir = 0;
+					snakeHead.ydir = 1;
 					break;
 				case KeyEvent.VK_LEFT:
-					System.out.println("LEFT");
-					tail[0].x--;
-					app.repaint();
+					snakeHead.xdir = -1;
+					snakeHead.ydir = 0;
 					break;
 				case KeyEvent.VK_RIGHT:
-					System.out.println("RIGHT");
-					tail[0].x++;
-					app.repaint();
+					snakeHead.xdir = 1;
+					snakeHead.ydir = 0;
 					break;
 				}
 			}
@@ -62,17 +65,24 @@ public class Game extends JPanel {
 				// TODO Auto-generated method stub
 
 			}
-
 		});
 
-		tail[0] = new Cell(4, 7);
-		tail[1] = new Cell(3, 7);
-		tail[2] = new Cell(2, 7);
-		tail[3] = new Cell(1, 7);
+		while (true) {
 
-		Snake player = new Snake(4, 7, 1, 0, tail);
+			for (int i = tail.length - 1; i > 0; i--) {
+				tail[i].x = tail[i - 1].x;
+				tail[i].y = tail[i - 1].y;
+			}
+			tail[0].x += snakeHead.xdir;
+			tail[0].y += snakeHead.ydir;
 
-		app.repaint();
+			snakeHead.move();
+			tail[0].x = snakeHead.x;
+			tail[0].y = snakeHead.y;
+			app.repaint();
+			Thread.sleep(500);
+		}
+
 	}
 
 	@Override
