@@ -1,7 +1,7 @@
-
-//import java.util.Random;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -22,6 +22,48 @@ public class Game extends JPanel {
 		frame.setSize(438, 412);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		frame.addKeyListener(new KeyListener() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				int keyCode = e.getKeyCode();
+				switch (keyCode) {
+				case KeyEvent.VK_UP:
+					System.out.println("UP");
+					tail[0].y--;
+					app.repaint();
+					break;
+				case KeyEvent.VK_DOWN:
+					System.out.println("DOWN");
+					tail[0].y++;
+					app.repaint();
+					break;
+				case KeyEvent.VK_LEFT:
+					System.out.println("LEFT");
+					tail[0].x--;
+					app.repaint();
+					break;
+				case KeyEvent.VK_RIGHT:
+					System.out.println("RIGHT");
+					tail[0].x++;
+					app.repaint();
+					break;
+				}
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+		});
 
 		tail[0] = new Cell(4, 7);
 		tail[1] = new Cell(3, 7);
