@@ -12,7 +12,7 @@ public class Game extends JPanel {
 	static int cellSize = 25;
 	static int height = 375;
 	static int width = 425;
-	static int startTail = 5;
+	static int startTail = 7;
 	static ArrayList<Cell> tail = new ArrayList<Cell>();
 	static boolean gamePlay = true;
 	static Snake snakeHead;
@@ -26,10 +26,12 @@ public class Game extends JPanel {
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		for (int i = 0; i < startTail; i++) {
+		// creates a new snake tail
+		for (int i = 0; i <= startTail; i++) {
 			tail.add(i, new Cell(startTail - i, 7));
 		}
 
+		// creates a new snake Head
 		snakeHead = new Snake(startTail, 7, 1, 0, tail);
 
 		// adding key Detection
@@ -73,16 +75,18 @@ public class Game extends JPanel {
 		// whilst game is active
 		while (gamePlay) {
 
+			app.repaint();
+
+			snakeHead.move();
+
 			for (int i = tail.size() - 1; i > 0; i--) {
 				tail.get(i).x = tail.get(i - 1).x;
 				tail.get(i).y = tail.get(i - 1).y;
 			}
 
-			snakeHead.move();
-
 			tail.get(0).x = snakeHead.x;
 			tail.get(0).y = snakeHead.y;
-			app.repaint();
+
 			Thread.sleep(250);
 		}
 
