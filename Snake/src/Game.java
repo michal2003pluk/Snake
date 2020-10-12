@@ -2,6 +2,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -11,9 +12,10 @@ public class Game extends JPanel {
 	static int cellSize = 25;
 	static int height = 375;
 	static int width = 425;
-	static int startTail = 10;
-	static Cell grid[][] = new Cell[width / cellSize][height / cellSize];
-	static Cell[] tail = new Cell[startTail];
+	static int startTail = 5;
+	static ArrayList<Cell> tail = new ArrayList<Cell>();
+	static boolean gamePlay = true;
+	static Snake snakeHead;
 
 	public static void main(String[] args) throws InterruptedException {
 		JFrame frame = new JFrame("Snake");
@@ -25,11 +27,12 @@ public class Game extends JPanel {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		for (int i = 0; i < startTail; i++) {
-			tail[i] = new Cell(startTail - i, 7);
+			tail.add(i, new Cell(startTail - i, 7));
 		}
 
-		Snake snakeHead = new Snake(startTail, 7, 1, 0, tail);
+		snakeHead = new Snake(startTail, 7, 1, 0, tail);
 
+		// adding key Detection
 		frame.addKeyListener(new KeyListener() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -67,26 +70,27 @@ public class Game extends JPanel {
 			}
 		});
 
-		while (true) {
+		// whilst game is active
+		while (gamePlay) {
 
-			for (int i = tail.length - 1; i > 0; i--) {
-				tail[i].x = tail[i - 1].x;
-				tail[i].y = tail[i - 1].y;
+			for (int i = tail.size() - 1; i > 0; i--) {
+				tail.get(i).x = tail.get(i - 1).x;
+				tail.get(i).y = tail.get(i - 1).y;
 			}
-			tail[0].x += snakeHead.xdir;
-			tail[0].y += snakeHead.ydir;
 
 			snakeHead.move();
-			tail[0].x = snakeHead.x;
-			tail[0].y = snakeHead.y;
+
+			tail.get(0).x = snakeHead.x;
+			tail.get(0).y = snakeHead.y;
 			app.repaint();
-			Thread.sleep(500);
+			Thread.sleep(250);
 		}
 
 	}
 
 	@Override
 	public void paint(Graphics g) {
+		// Generating Green background
 		for (int y = 0; y < height / cellSize; y++) {
 			for (int x = 0; x < width / cellSize; x++) {
 				Color color = ((x + y) % 2 == 0) ? new Color(142, 204, 57) : new Color(167, 217, 72);
@@ -95,12 +99,14 @@ public class Game extends JPanel {
 			}
 		}
 
+		// Displaying snake Head
 		g.setColor(new Color(0, 0, 0));
-		g.fillRect(tail[0].x * cellSize, tail[0].y * cellSize, cellSize, cellSize);
+		g.fillRect(snakeHead.x * cellSize, snakeHead.y * cellSize, cellSize, cellSize);
 
+		// Displaying snake tail
 		g.setColor(new Color(255, 0, 0));
-		for (int i = 1; i < tail.length; i++) {
-			g.fillRect(tail[i].x * cellSize, tail[i].y * cellSize, cellSize, cellSize);
+		for (int i = 1; i < tail.size(); i++) {
+			g.fillRect(tail.get(i).x * cellSize, tail.get(i).y * cellSize, cellSize, cellSize);
 
 		}
 	}
