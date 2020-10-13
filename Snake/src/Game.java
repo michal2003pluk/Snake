@@ -16,6 +16,7 @@ public class Game extends JPanel {
 	static ArrayList<Cell> tail = new ArrayList<Cell>();
 	static boolean gamePlay = true;
 	static Snake snakeHead;
+	static Fruit fruit;
 
 	public static void main(String[] args) throws InterruptedException {
 		JFrame frame = new JFrame("Snake");
@@ -33,6 +34,9 @@ public class Game extends JPanel {
 
 		// creates a new snake Head
 		snakeHead = new Snake(startTail, 7, 1, 0, tail);
+
+		// creates a new starting fruit
+		fruit = new Fruit(14, 7);
 
 		// adding key Detection
 		frame.addKeyListener(new KeyListener() {
@@ -113,5 +117,11 @@ public class Game extends JPanel {
 			g.fillRect(tail.get(i).x * cellSize, tail.get(i).y * cellSize, cellSize, cellSize);
 
 		}
+
+		// Displaying available fruit
+		g.setColor(new Color(255, 255, 0));
+		g.fillOval(fruit.x * cellSize + (int) Math.round(0.05 * cellSize),
+				fruit.y * cellSize + (int) Math.round(0.05 * cellSize), (int) Math.round(cellSize * 0.9),
+				(int) Math.round(cellSize * 0.9));
 	}
 }
