@@ -3,6 +3,7 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -12,7 +13,7 @@ public class Game extends JPanel {
 	static int cellSize = 25;
 	static int height = 375;
 	static int width = 425;
-	static int startTail = 7;
+	static int startTail = 4;
 	static ArrayList<Cell> tail = new ArrayList<Cell>();
 	static boolean gamePlay = true;
 	static Snake snakeHead;
@@ -35,8 +36,8 @@ public class Game extends JPanel {
 		// creates a new snake Head
 		snakeHead = new Snake(startTail, 7, 1, 0, tail);
 
-		// creates a new starting fruit
-		fruit = new Fruit(14, 7);
+		// creates a new starting fruit in random x,y
+		generateFruit();
 
 		// adding key Detection
 		frame.addKeyListener(new KeyListener() {
@@ -95,7 +96,7 @@ public class Game extends JPanel {
 				tail.get(0).x = snakeHead.x;
 				tail.get(0).y = snakeHead.y;
 
-				Thread.sleep(500);
+				Thread.sleep(250);
 
 			}
 		}
@@ -129,5 +130,23 @@ public class Game extends JPanel {
 		g.fillOval(fruit.x * cellSize + (int) Math.round(0.05 * cellSize),
 				fruit.y * cellSize + (int) Math.round(0.05 * cellSize), (int) Math.round(cellSize * 0.9),
 				(int) Math.round(cellSize * 0.9));
+
 	}
+
+	public static void generateFruit() {
+		Random rnd = new Random();
+		int rndX = rnd.nextInt(width / cellSize);
+		int rndY = rnd.nextInt(height / cellSize);
+
+		if (snakeHead.x == rndX || snakeHead.y == rndY) {
+			generateFruit();
+		}
+		for (int i = 0; i < tail.size(); i++) {
+			if (tail.get(i).x == rndX || tail.get(i).y == rndY) {
+				generateFruit();
+			}
+		}
+		fruit = new Fruit(rndX, rndY);
+	}
+
 }
