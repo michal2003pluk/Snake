@@ -29,7 +29,7 @@ public class Game extends JPanel {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// creates a new snake tail
-		for (int i = 0; i <= startTail; i++) {
+		for (int i = 0; i < startTail; i++) {
 			tail.add(i, new Cell(startTail - i, 7));
 		}
 
@@ -79,12 +79,19 @@ public class Game extends JPanel {
 
 		// whilst game is active
 		while (gamePlay) {
-
+			
 			app.repaint();
 			if (snakeHead.hitBorder(width / cellSize, height / cellSize)) {
 				gamePlay = false;
 				System.out.println("Hit border");
 			} else {
+
+				if (snakeHead.ateFruit(fruit)) {
+					System.out.printf("Ate fruit at %d, %d%n", fruit.x, fruit.y);
+					tail.add(new Cell(tail.get(tail.size() - 1).x, tail.get(tail.size() - 1).y));
+					generateFruit();
+					app.repaint();
+				}
 
 				snakeHead.move();
 
@@ -138,11 +145,11 @@ public class Game extends JPanel {
 		int rndX = rnd.nextInt(width / cellSize);
 		int rndY = rnd.nextInt(height / cellSize);
 
-		if (snakeHead.x == rndX || snakeHead.y == rndY) {
+		if (snakeHead.x == rndX && snakeHead.y == rndY) {
 			generateFruit();
 		}
 		for (int i = 0; i < tail.size(); i++) {
-			if (tail.get(i).x == rndX || tail.get(i).y == rndY) {
+			if (tail.get(i).x == rndX && tail.get(i).y == rndY) {
 				generateFruit();
 			}
 		}

@@ -37,4 +37,9 @@ public class Snake {
 
 	}
 
+	public boolean ateFruit(Fruit fruit) {
+
+		return this.x + this.xdir == fruit.x && this.y + this.ydir == fruit.y;
+	}
+
 }
