@@ -26,4 +26,15 @@ public class Snake {
 
 	}
 
+	public boolean hitBorder(int w, int h) {
+		if (this.x + this.xdir < 0 || this.x + this.xdir > w - 1 || this.y + this.ydir < 0
+				|| this.y + this.ydir > h - 1) {
+			return true;
+
+		} else {
+			return false;
+		}
+
+	}
+
 }

@@ -80,18 +80,24 @@ public class Game extends JPanel {
 		while (gamePlay) {
 
 			app.repaint();
+			if (snakeHead.hitBorder(width / cellSize, height / cellSize)) {
+				gamePlay = false;
+				System.out.println("Hit border");
+			} else {
 
-			snakeHead.move();
+				snakeHead.move();
 
-			for (int i = tail.size() - 1; i > 0; i--) {
-				tail.get(i).x = tail.get(i - 1).x;
-				tail.get(i).y = tail.get(i - 1).y;
+				for (int i = tail.size() - 1; i > 0; i--) {
+					tail.get(i).x = tail.get(i - 1).x;
+					tail.get(i).y = tail.get(i - 1).y;
+				}
+
+				tail.get(0).x = snakeHead.x;
+				tail.get(0).y = snakeHead.y;
+
+				Thread.sleep(500);
+
 			}
-
-			tail.get(0).x = snakeHead.x;
-			tail.get(0).y = snakeHead.y;
-
-			Thread.sleep(250);
 		}
 
 	}
