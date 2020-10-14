@@ -46,25 +46,25 @@ public class Game extends JPanel {
 				int keyCode = e.getKeyCode();
 				switch (keyCode) {
 				case KeyEvent.VK_UP:
-				if (snakeHead.ydir != 1) {
+				if (snakeHead.xdir == 0) {
 					snakeHead.xdir = 0;
 					snakeHead.ydir = -1;
 				}
 					break;
 				case KeyEvent.VK_DOWN:
-				if (snakeHead.ydir != -1) {
+				if (snakeHead.xdir == 0) {
 					snakeHead.xdir = 0;
 					snakeHead.ydir = 1;
 				}
 					break;
 				case KeyEvent.VK_LEFT:
-				if (snakeHead.xdir != 1) {
+				if (snakeHead.ydir == 0) {
 					snakeHead.xdir = -1;
 					snakeHead.ydir = 0;
 				}
 					break;
 				case KeyEvent.VK_RIGHT:
-				if (snakeHead.xdir != -1) {
+				if (snakeHead.ydir == 0) {
 					snakeHead.xdir = 1;
 					snakeHead.ydir = 0;
 				}
