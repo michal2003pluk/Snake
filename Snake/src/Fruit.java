@@ -1,7 +1,7 @@
 public class Fruit extends Cell {
 
-	boolean available = true;
 
+	//gives the fruit the same attributes as a cell would have (x,y)
 	public Fruit(int x, int y) {
 		super(x, y);
 	}

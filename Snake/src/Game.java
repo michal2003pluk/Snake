@@ -44,6 +44,9 @@ public class Game extends JPanel {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				int keyCode = e.getKeyCode();
+
+
+				//Direction change detection has not been debugged yet. Check later
 				switch (keyCode) {
 				case KeyEvent.VK_UP:
 				if (snakeHead.xdir == 0) {
@@ -90,19 +93,31 @@ public class Game extends JPanel {
 			
 			app.repaint();
 			if (snakeHead.hitBorder(width / cellSize, height / cellSize)) {
+				//stops the game
 				gamePlay = false;
 				System.out.println("Hit border");
 			} else {
+					int hitPoint = snakeHead.hitTail(tail);
+				if (hitPoint > -1) {
+					System.out.println("Hit tail");
+					gamePlay = false;
+					//Removes the entire tail starting from the hit Point to the end of the tail
+					// for (int i = hitPoint; i < tail.size(); i++) {
+					// 	tail.remove(i);
+					// }
 
-				if (snakeHead.ateFruit(fruit)) {
+				} else if (snakeHead.ateFruit(fruit)) {
+					//debugging message
 					System.out.printf("Ate fruit at %d, %d%n", fruit.x, fruit.y);
 					tail.add(new Cell(tail.get(tail.size() - 1).x, tail.get(tail.size() - 1).y));
 					generateFruit();
 					app.repaint();
 				}
 
+
 				snakeHead.move();
 
+				//moves each tail piece to the position of the tailPiece in front of it
 				for (int i = tail.size() - 1; i > 0; i--) {
 					tail.get(i).x = tail.get(i - 1).x;
 					tail.get(i).y = tail.get(i - 1).y;
@@ -149,18 +164,23 @@ public class Game extends JPanel {
 	}
 
 	public static void generateFruit() {
+		//Generates random x and y for the fruit
 		Random rnd = new Random();
 		int rndX = rnd.nextInt(width / cellSize);
 		int rndY = rnd.nextInt(height / cellSize);
 
+		//if the generated fruit's x and y is the same as the snakeHead's x and y 
 		if (snakeHead.x == rndX && snakeHead.y == rndY) {
+			//retries fruit generation
 			generateFruit();
 		}
+		//check if the generated fruit coincides with the tail
 		for (int i = 0; i < tail.size(); i++) {
 			if (tail.get(i).x == rndX && tail.get(i).y == rndY) {
 				generateFruit();
 			}
 		}
+		//if the there were no issues with generation then the fruit is initialised
 		fruit = new Fruit(rndX, rndY);
 	}
 
